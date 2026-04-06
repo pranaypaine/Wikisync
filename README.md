@@ -2,6 +2,19 @@
 
 A self-hosted collaborative wiki with real-time editing, live markdown preview, full-text search, and nested pages.
 
+## Index
+
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Deployment](#deployment)
+- [Stress Testing](#stress-testing)
+- [Configuration](#configuration)
+- [API Reference](#api-reference)
+- [Architecture](#architecture)
+- [Using PostgreSQL Instead of SQLite](#using-postgresql-instead-of-sqlite)
+- [Stack Justification](docs/stack-justification.md)
+- [Planed Features](docs/Future.md)
+
 ## Features
 
 ### Core
