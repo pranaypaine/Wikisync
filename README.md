@@ -221,7 +221,78 @@ server {
 
 Obtain a certificate with `certbot --nginx -d wiki.example.com`.
 
-## Configuration
+## Stress Testing
+
+A load-test script is included at `scripts/stress_test.sh`. It auto-creates a test user, runs HTTP benchmarks against every major endpoint, and then hammers the WebSocket layer with concurrent clients — no external account or API key needed.
+
+### Dependencies
+
+| Tool | Required | Install |
+|---|---|---|
+| `wrk` | Yes | `sudo apt install wrk` / `brew install wrk` |
+| `jq` | Yes | `sudo apt install jq` / `brew install jq` |
+| `node` | Yes (WebSocket test) | already needed to build the frontend |
+| `wrk2` | No — only for `--rps` cap | `brew install wrk2` |
+
+### Running
+
+```bash
+# Make sure the server is running first
+./run.sh &   # or in a separate terminal
+
+# Default: 500 connections, 30 s per endpoint, 200 WebSocket clients
+./scripts/stress_test.sh
+
+# Quick smoke test
+./scripts/stress_test.sh --duration 10s --conns 100
+
+# High concurrency
+./scripts/stress_test.sh --conns 2000 --threads 16 --duration 60s
+
+# Cap request rate at 50 000 req/s (requires wrk2)
+./scripts/stress_test.sh --rps 50000 --duration 60s
+
+# Skip WebSocket benchmark
+./scripts/stress_test.sh --skip-ws
+
+# Test a remote server
+./scripts/stress_test.sh --url https://wiki.example.com
+```
+
+### Options
+
+| Flag | Default | Description |
+|---|---|---|
+| `--url` | `http://localhost:3000` | Base URL of the server under test |
+| `--duration` | `30s` | How long to hammer each HTTP endpoint |
+| `--conns` | `500` | Concurrent HTTP connections |
+| `--threads` | `nproc` | wrk worker threads |
+| `--rps` | unlimited | Target req/s (wrk2 only) |
+| `--ws-clients` | `200` | Concurrent WebSocket clients |
+| `--skip-ws` | — | Skip the WebSocket benchmark |
+
+### What it measures
+
+| Benchmark | Endpoint | Measures |
+|---|---|---|
+| 1 | `GET /api/auth/me` | JWT validation overhead per request |
+| 2 | `GET /api/pages` | DB read + page-tree build |
+| 3 | `GET /api/pages/:id` | Single row fetch |
+| 4 | `GET /api/search?q=stress` | SQLite FTS5 query latency |
+| 5 | `GET /api/pages/shared-with-me` | JOIN query |
+| 6 | WebSocket (`/ws/pages/:id`) | Concurrent connections + broadcast throughput |
+
+Each HTTP benchmark reports: **avg, stdev, p50, p90, p95, p99, p99.9, max** latency, HTTP errors, and timeouts.
+
+The WebSocket benchmark reports: total messages sent, elapsed time, **msgs/s throughput**, and connection lifecycle latency at avg/p50/p90/p95/p99/max.
+
+### Results
+
+Reports are saved to `stress-results/report_<timestamp>.txt` after every run, so you can diff runs across deploys:
+
+```bash
+ls -lh stress-results/
+```
 
 All configuration via environment variables or a `.env` file in the project root:
 
