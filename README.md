@@ -1,4 +1,5 @@
 # Wiki
+> Total build time 3 Hours. including Planning, testing, 100% written by AI.
 
 A self-hosted collaborative wiki with real-time editing, live markdown preview, full-text search, and nested pages.
 
