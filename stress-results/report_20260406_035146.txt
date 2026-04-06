@@ -1,0 +1,176 @@
+Wiki stress test — Mon Apr  6 03:51:46 UTC 2026
+URL: http://localhost:3000 | threads: 12 | connections: 500 | duration: 30s
+==========================================================
+
+=== Benchmark 1 — Auth: GET /api/auth/me (JWT overhead) ===
+  URL: http://localhost:3000/api/auth/me
+Running 30s test @ http://localhost:3000/api/auth/me
+  12 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    14.13ms    1.71ms  33.23ms   74.26%
+    Req/Sec     2.91k   249.45     5.11k    86.39%
+  Latency Distribution
+     50%   13.85ms
+     75%   15.02ms
+     90%   16.31ms
+     99%   19.22ms
+  1047046 requests in 29.01s, 332.51MB read
+  Socket errors: connect 0, read 0, write 0, timeout 492
+Requests/sec:  36094.81
+Transfer/sec:     11.46MB
+-----
+  Avg latency : 14.13 ms
+  Stdev       : 1.71 ms
+  p50         : 13.85 ms
+  p90         : 16.30 ms
+  p95         : 17.20 ms
+  p99         : 19.22 ms
+  p99.9       : 23.08 ms
+  Max latency : 33.23 ms
+  HTTP errors : 0
+  Timeouts    : 492
+
+
+=== Benchmark 2 — Pages: GET /api/pages (DB read, tree build) ===
+  URL: http://localhost:3000/api/pages
+Running 30s test @ http://localhost:3000/api/pages
+  12 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    63.48ms    5.51ms 296.53ms   83.83%
+    Req/Sec   645.60    166.24     1.24k    49.34%
+  Latency Distribution
+     50%   62.77ms
+     75%   65.57ms
+     90%   68.95ms
+     99%   83.49ms
+  232606 requests in 29.07s, 249.12MB read
+  Socket errors: connect 0, read 0, write 0, timeout 492
+Requests/sec:   8001.24
+Transfer/sec:      8.57MB
+-----
+  Avg latency : 63.48 ms
+  Stdev       : 5.51 ms
+  p50         : 62.77 ms
+  p90         : 68.95 ms
+  p95         : 72.32 ms
+  p99         : 83.49 ms
+  p99.9       : 96.75 ms
+  Max latency : 296.53 ms
+  HTTP errors : 0
+  Timeouts    : 492
+
+
+=== Benchmark 3 — Pages: GET /api/pages/c774acdd-23fc-4911-b258-c7cccdef324f (single row fetch) ===
+  URL: http://localhost:3000/api/pages/c774acdd-23fc-4911-b258-c7cccdef324f
+Running 30s test @ http://localhost:3000/api/pages/c774acdd-23fc-4911-b258-c7cccdef324f
+  12 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    48.27ms    5.12ms 113.24ms   82.31%
+    Req/Sec   849.86    107.75     1.23k    79.87%
+  Latency Distribution
+     50%   47.21ms
+     75%   49.95ms
+     90%   53.99ms
+     99%   65.46ms
+  306543 requests in 29.06s, 195.87MB read
+  Socket errors: connect 0, read 0, write 0, timeout 492
+Requests/sec:  10550.05
+Transfer/sec:      6.74MB
+-----
+  Avg latency : 48.27 ms
+  Stdev       : 5.12 ms
+  p50         : 47.21 ms
+  p90         : 53.99 ms
+  p95         : 58.79 ms
+  p99         : 65.46 ms
+  p99.9       : 87.21 ms
+  Max latency : 113.23 ms
+  HTTP errors : 0
+  Timeouts    : 492
+
+
+=== Benchmark 4 — Search: GET /api/search?q=stress (FTS5) ===
+  URL: http://localhost:3000/api/search?q=stress
+Running 30s test @ http://localhost:3000/api/search?q=stress
+  12 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    53.52ms    7.13ms 247.41ms   86.64%
+    Req/Sec   763.91    122.57     2.07k    81.41%
+  Latency Distribution
+     50%   52.03ms
+     75%   56.49ms
+     90%   60.85ms
+     99%   78.30ms
+  274954 requests in 29.01s, 154.45MB read
+  Socket errors: connect 0, read 0, write 0, timeout 492
+Requests/sec:   9479.44
+Transfer/sec:      5.32MB
+-----
+  Avg latency : 53.52 ms
+  Stdev       : 7.13 ms
+  p50         : 52.03 ms
+  p90         : 60.85 ms
+  p95         : 66.17 ms
+  p99         : 78.30 ms
+  p99.9       : 106.81 ms
+  Max latency : 247.41 ms
+  HTTP errors : 0
+  Timeouts    : 492
+
+
+=== Benchmark 5 — Shared: GET /api/pages/shared-with-me (join query) ===
+  URL: http://localhost:3000/api/pages/shared-with-me
+Running 30s test @ http://localhost:3000/api/pages/shared-with-me
+  12 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    15.30ms    2.36ms 222.23ms   81.42%
+    Req/Sec     2.67k   323.92     9.89k    89.00%
+  Latency Distribution
+     50%   14.90ms
+     75%   16.36ms
+     90%   17.90ms
+     99%   22.65ms
+  960166 requests in 28.99s, 199.62MB read
+  Socket errors: connect 0, read 0, write 0, timeout 492
+Requests/sec:  33123.19
+Transfer/sec:      6.89MB
+-----
+  Avg latency : 15.30 ms
+  Stdev       : 2.36 ms
+  p50         : 14.90 ms
+  p90         : 17.90 ms
+  p95         : 18.98 ms
+  p99         : 22.64 ms
+  p99.9       : 31.23 ms
+  Max latency : 222.23 ms
+  HTTP errors : 0
+  Timeouts    : 492
+
+=== WebSocket: 200 concurrent clients ===
+  Clients           : 200
+  Connected         : 200
+  Errors            : 0
+  Total messages    : 2000
+  Elapsed           : 6366 ms
+  Throughput        : ~314 msgs/s
+  Conn latency avg  : 6304.33 ms
+  Conn latency p50  : 6306.16 ms
+  Conn latency p90  : 6324.75 ms
+  Conn latency p95  : 6326.81 ms
+  Conn latency p99  : 6330.87 ms
+  Conn latency max  : 6332.18 ms
+
+
+==========================================
+System info
+==========================================
+  OS      : Linux 5.15.167.4-microsoft-standard-WSL2
+  CPUs    : 12
+  RAM     : 15Gi
+  wrk     : wrk debian/4.1.0-4build2 [epoll] Copyright (C) 2012 Will Glozer
+
+Test parameters
+  Threads     : 12
+  Connections : 500
+  Duration    : 30s
+  WS clients  : 200
