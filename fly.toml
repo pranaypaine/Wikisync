@@ -1,15 +1,12 @@
-# fly.toml app configuration file generated for wikisync on 2026-04-16T10:34:37Z
+# fly.toml app configuration file generated for wikisync on 2026-04-16T10:40:34Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'wikisync'
-primary_region = 'ams'
+primary_region = 'iad'
 
 [build]
-
-[env]
-  PORT = '8080'
 
 [http_service]
   internal_port = 8080
@@ -23,4 +20,4 @@ primary_region = 'ams'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-  memory_mb = 256
+  memory_mb = 1024
